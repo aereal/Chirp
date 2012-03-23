@@ -4,9 +4,16 @@ use warnings;
 use Object::Simple -base;
 use List::MoreUtils ':all';
 
+our $USER_TLS = {};
+
 has publishers => sub { [] };
 has subscribers => sub { [] };
 has notifications => sub { [] };
+
+sub find_home_tl {
+    my ($class, $user) = @_;
+    $USER_TLS->{$user->name};
+}
 
 sub authorized {
     my ($self, $name) = @_;
