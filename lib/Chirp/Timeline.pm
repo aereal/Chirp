@@ -5,6 +5,7 @@ use Object::Simple -base;
 use List::MoreUtils ':all';
 
 has publishers => sub { [] };
+has subscribers => sub { [] };
 
 sub authorized {
     my ($self, $name) = @_;

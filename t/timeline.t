@@ -28,6 +28,19 @@ subtest publishers => sub {
     };
 };
 
+subtest subscribers => sub {
+    subtest 'isolated tl' => sub {
+        my $tl = Chirp::Timeline->new;
+        ok none { defined $_ } @{ $tl->subscribers };
+    };
+
+    subtest 'Hitagi subscribes this' => sub {
+        my $hitagi = Chirp::LittleBird->new(name => 'Hitagi');
+        my $tl = Chirp::Timeline->new(subscribers => [$hitagi->name]);
+        ok any { $_ eq $hitagi->name } @{ $tl->subscribers };
+    };
+};
+
 subtest authorized => sub {
     subtest 'TL not include you' => sub {
         my $you = Chirp::LittleBird->new(name => 'you');
