@@ -24,4 +24,17 @@ subtest name => sub {
     };
 };
 
+subtest followee => sub {
+    subtest after_initialized => sub {
+        my $bird = LittleBird->new(name => 'hitagi');
+        is_deeply $bird->followee, [];
+    };
+
+    subtest 'with initial followee' => sub {
+        my $default_followee = [LittleBird->new(name => 'koyomi')];
+        my $bird = LittleBird->new(name => 'hitagi', followee => $default_followee);
+        is_deeply $bird->followee, [@$default_followee];
+    };
+};
+
 done_testing;
