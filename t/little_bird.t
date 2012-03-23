@@ -15,6 +15,18 @@ subtest initialize => sub {
     new_ok 'Chirp::LittleBird';
 };
 
+subtest find => sub {
+    subtest 'not registered bird' => sub {
+        my $missing_name = 'NOT REGISTERED';
+        is 'Chirp::LittleBird'->find($missing_name), undef;
+    };
+
+    subtest 'already registered' => sub {
+        my $bird = Chirp::LittleBird->new(name => 'REGISTERED');
+        is 'Chirp::LittleBird'->find($bird->name), $bird;
+    };
+};
+
 subtest name => sub {
     subtest nameless => sub {
         my $bird = Chirp::LittleBird->new;
