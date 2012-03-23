@@ -26,4 +26,10 @@ sub follow {
     return;
 }
 
+sub unfollow {
+    my ($self, $other) = @_;
+    $self->followee([grep { !($_->name eq $other->name) } @{$self->followee}]);
+    return;
+}
+
 1;

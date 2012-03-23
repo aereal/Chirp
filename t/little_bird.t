@@ -61,4 +61,13 @@ subtest follow => sub {
     ok any { $_->name eq 'miyako' } @{$yuno->followee};
 };
 
+subtest unfollow => sub {
+    my $sae = Chirp::LittleBird->new(name => 'sae');
+    my $hiro = Chirp::LittleBird->new(name => 'hiro', followee => [$sae]);
+
+    ok any { $_->name eq $sae->name } @{$hiro->followee};
+    $hiro->unfollow($sae);
+    ok none { $_->name eq $sae->name } @{$hiro->followee};
+};
+
 done_testing;
