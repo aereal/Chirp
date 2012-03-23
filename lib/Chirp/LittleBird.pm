@@ -2,6 +2,7 @@ package Chirp::LittleBird;
 use strict;
 use warnings;
 use Object::Simple -base;
+use List::MoreUtils ':all';
 
 has name => '';
 has followee => sub { [] };
@@ -30,6 +31,11 @@ sub unfollow {
     my ($self, $other) = @_;
     $self->followee([grep { !($_->name eq $other->name) } @{$self->followee}]);
     return;
+}
+
+sub followed {
+    my ($self, $other) = @_;
+    any { $_ == $other } @{ $self->followee };
 }
 
 1;

@@ -70,4 +70,19 @@ subtest unfollow => sub {
     ok none { $_->name eq $sae->name } @{$hiro->followee};
 };
 
+subtest followed => sub {
+    my $koyomi = Chirp::LittleBird->new(name => 'koyomi');
+
+    subtest 'not followed' => sub {
+        my $meme = Chirp::LittleBird->new(name => 'meme');
+        ok not $koyomi->followed($meme);
+    };
+
+    subtest 'followed' => sub {
+        my $hitagi = Chirp::LittleBird->new(name => 'hitagi');
+        $koyomi->follow($hitagi);
+        ok $koyomi->followed($hitagi);
+    };
+};
+
 done_testing;
