@@ -55,4 +55,21 @@ subtest authorized => sub {
     };
 };
 
+subtest notifications => sub {
+    subtest 'empty TL' => sub {
+        my $tl = Chirp::Timeline->new;
+        ok none { defined $_ } @{ $tl->notifications };
+    };
+
+    subtest 'Hitagi create tweet on this TL' => sub {
+        my $hitagi = Chirp::LittleBird->new(name => 'Hitagi');
+        my $tweet_event = {tweet =>
+            {user_name => $hitagi->name, body => 'Araragi Koyomi, Bukkorosu'}};
+        my $tl = Chirp::Timeline->new(
+            subscribers => [$hitagi->name], notifications => [$tweet_event]);
+        ok any { $_ == $tweet_event } @{ $tl->notifications };
+    };
+};
+
+
 done_testing;
