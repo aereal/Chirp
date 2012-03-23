@@ -8,6 +8,7 @@ use List::MoreUtils ':all';
 
 use lib '../lib';
 
+use Chirp::LittleBird;
 use Chirp::Timeline;
 
 subtest initialize => sub {
@@ -24,6 +25,20 @@ subtest publishers => sub {
         my $publisher_name = 'nakamura';
         my $tl = Chirp::Timeline->new(publishers => [$publisher_name]);
         ok any { $_ eq $publisher_name } @{ $tl->publishers };
+    };
+};
+
+subtest authorized => sub {
+    subtest 'TL not include you' => sub {
+        my $you = Chirp::LittleBird->new(name => 'you');
+        my $tl = Chirp::Timeline->new;
+        ok not $tl->authorized($you->name);
+    };
+
+    subtest 'TL include you!' => sub {
+        my $you = Chirp::LittleBird->new(name => 'you');
+        my $tl = Chirp::Timeline->new(publishers => [$you->name]);
+        ok $tl->authorized($you->name);
     };
 };
 
