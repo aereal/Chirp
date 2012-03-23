@@ -38,4 +38,9 @@ sub followed {
     any { $_ == $other } @{ $self->followee };
 }
 
+sub subscriber_of {
+    my ($self, $tl) = @_;
+    any { $_ eq $self->name } @{ $tl->subscribers };
+}
+
 1;

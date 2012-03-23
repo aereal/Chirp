@@ -10,6 +10,7 @@ use Data::Dumper;
 use lib '../lib';
 
 use Chirp::LittleBird;
+use Chirp::Timeline;
 
 subtest initialize => sub {
     new_ok 'Chirp::LittleBird';
@@ -82,6 +83,20 @@ subtest followed => sub {
         my $hitagi = Chirp::LittleBird->new(name => 'hitagi');
         $koyomi->follow($hitagi);
         ok $koyomi->followed($hitagi);
+    };
+};
+
+subtest subscriber_of => sub {
+    my $aereal = Chirp::LittleBird->new(name => 'aereal');
+
+    subtest 'not subscribed TL' => sub {
+        my $tl = Chirp::Timeline->new;
+        ok not $aereal->subscriber_of($tl);
+    };
+
+    subtest 'subscribed TL' => sub {
+        my $tl = Chirp::Timeline->new(subscribers => [$aereal->name]);
+        ok $aereal->subscriber_of($tl);
     };
 };
 
