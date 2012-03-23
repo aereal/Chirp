@@ -1,11 +1,8 @@
 package LittleBird;
 use strict;
 use warnings;
+use Object::Simple -base;
 
-sub new {
-    my ($class) = @_;
-    my $self = {};
-    bless $self, $class;
-}
+has name => '';
 
 1;
