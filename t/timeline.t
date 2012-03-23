@@ -8,3 +8,9 @@ use Test::Name::FromLine;
 use lib '../lib';
 
 use Chirp::Timeline;
+
+subtest initialize => sub {
+    new_ok 'Chirp::Timeline';
+};
+
+done_testing;
