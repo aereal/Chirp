@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use base qw(Test::Class);
 use Test::More;
+use List::MoreUtils ':all';
 
 use lib '../lib';
 
@@ -35,6 +36,15 @@ subtest followee => sub {
         my $bird = LittleBird->new(name => 'hitagi', followee => $default_followee);
         is_deeply $bird->followee, [@$default_followee];
     };
+};
+
+subtest follow => sub {
+    my $yuno = LittleBird->new(name => 'yuno');
+    my $miyako = LittleBird->new(name => 'miyako');
+
+    ok none { $_->name eq 'miyako' } @{$yuno->followee};
+    $yuno->follow($miyako);
+    ok any { $_->name eq 'miyako' } @{$yuno->followee};
 };
 
 done_testing;
