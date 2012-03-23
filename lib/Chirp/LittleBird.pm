@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Object::Simple -base;
 use List::MoreUtils ':all';
+use Chirp::Timeline;
 
 has name => '';
 has followee => sub { [] };
@@ -41,6 +42,11 @@ sub followed {
 sub subscriber_of {
     my ($self, $tl) = @_;
     any { $_ eq $self->name } @{ $tl->subscribers };
+}
+
+sub home_tl {
+    my ($self) = @_;
+    Chirp::Timeline->find_home_tl($self) || Chirp::Timeline->new(subscribers => [$self->name]);
 }
 
 1;
