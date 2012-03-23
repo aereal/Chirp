@@ -13,4 +13,10 @@ sub authorized {
     any { $_ eq $name } @{ $self->publishers };
 }
 
+sub create_notification {
+    my ($self, $user_name, $notification) = @_;
+    die 'The user is not in publishers' unless $self->authorized($user_name);
+    push @{ $self->notifications }, $notification;
+}
+
 1;

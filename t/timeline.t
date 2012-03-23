@@ -5,6 +5,7 @@ use base qw(Test::Class);
 use Test::More;
 use Test::Name::FromLine;
 use List::MoreUtils ':all';
+use Test::Fatal qw/exception lives_ok/;
 
 use lib '../lib';
 
@@ -71,5 +72,23 @@ subtest notifications => sub {
     };
 };
 
+subtest create_notification => sub {
+    subtest 'Karen is not in publishers' => sub {
+        my $karen = Chirp::LittleBird->new(name => 'Karen');
+        my $notification = {tweet => {user_name => $karen->name, body => 'Hamigaki Daisuki'}};
+        my $tl = Chirp::Timeline->new;
+        like exception { $tl->create_notification($karen->name, $notification) }, qr/The user is not in publishers/;
+    };
+
+    subtest 'Tsukihi is in publishers' => sub {
+        my $tsukihi = Chirp::LittleBird->new(name => 'Tsukihi');
+        my $notification = {tweet => {user_name => $tsukihi->name, body => 'platinum mukatsuku'}};
+        my $tl = Chirp::Timeline->new(publishers => [$tsukihi->name]);
+
+        ok none { $_ == $notification } @{ $tl->notifications };
+        lives_ok { $tl->create_notification($tsukihi->name, $notification) };
+        ok any { $_ == $notification } @{ $tl->notifications };
+    };
+};
 
 done_testing;
