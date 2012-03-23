@@ -1,4 +1,4 @@
-package LittleBird;
+package Chirp::LittleBird;
 use strict;
 use warnings;
 use Object::Simple -base;
