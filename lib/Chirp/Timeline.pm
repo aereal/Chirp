@@ -15,6 +15,13 @@ sub find_home_tl {
     $USER_TLS->{$user->name};
 }
 
+sub new_home_tl {
+    my ($class, $user) = @_;
+    my $self = $class->new(publishers => [$user->name], subscribers => [$user->name]);
+    $USER_TLS->{$user->name} = $self;
+    $self;
+}
+
 sub authorized {
     my ($self, $name) = @_;
     any { $_ eq $name } @{ $self->publishers };

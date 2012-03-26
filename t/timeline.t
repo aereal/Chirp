@@ -30,6 +30,15 @@ subtest find_home_tl => sub {
     };
 };
 
+subtest new_home_tl => sub {
+    my $tk = Chirp::LittleBird->new(name => 'Tooru Kitajima');
+    my $tl = Chirp::Timeline->new_home_tl($tk);
+    isa_ok $tl, 'Chirp::Timeline';
+    is 'Chirp::Timeline'->find_home_tl($tk), $tl;
+    ok $tk->subscriber_of($tl);
+    ok $tk->pushable($tl);
+};
+
 subtest publishers => sub {
     subtest hidden => sub {
         my $tl = Chirp::Timeline->new;
