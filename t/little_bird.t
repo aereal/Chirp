@@ -115,4 +115,17 @@ subtest home_tl => sub {
     };
 };
 
+subtest followers => sub {
+    subtest 'isolated bird' => sub {
+        my $isolated = Chirp::LittleBird->new(name => 'isolated');
+        is_deeply $isolated->followers, [];
+    };
+
+    subtest 'Shinobu follows Koyomi' => sub {
+        my $koyomi = Chirp::LittleBird->new(name => 'Koyomi');
+        my $shinobu = Chirp::LittleBird->new(name => 'Shinobu', followee => [$koyomi->name]);
+        ok any { $_ eq $shinobu->name } @{ $koyomi->followers };
+    };
+};
+
 done_testing;

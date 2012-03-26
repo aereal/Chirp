@@ -49,4 +49,10 @@ sub home_tl {
     Chirp::Timeline->find_home_tl($self) || Chirp::Timeline->new(subscribers => [$self->name]);
 }
 
+sub followers {
+    my ($self) = @_;
+    my $class = ref $self;
+    [grep { $class->find($_)->followed($self) } keys %$REGISTERED];
+}
+
 1;
