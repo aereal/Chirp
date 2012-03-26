@@ -4,6 +4,7 @@ use warnings;
 use Object::Simple -base;
 use List::MoreUtils ':all';
 use Chirp::Timeline;
+use Chirp::Timeline::WithFriends;
 
 has name => '';
 has followee => sub { [] };
@@ -26,14 +27,12 @@ sub find {
 sub follow {
     my ($self, $other) = @_;
     push @{$self->followee}, $other->name;
-    push @{$self->home_tl->publishers}, $other->name;
     return;
 }
 
 sub unfollow {
     my ($self, $other) = @_;
     $self->followee([grep { !($_ eq $other->name) } @{$self->followee}]);
-    $self->home_tl->publishers([grep { !($_ eq $other->name) } @{$self->home_tl->publishers}]);
     return;
 }
 
@@ -49,7 +48,7 @@ sub subscriber_of {
 
 sub home_tl {
     my ($self) = @_;
-    Chirp::Timeline->find_home_tl($self) || Chirp::Timeline->new_home_tl($self);
+    'Chirp::Timeline::WithFriends'->new(publishers => [@{$self->followee}, $self->name]);
 }
 
 sub followers {

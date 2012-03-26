@@ -16,29 +16,6 @@ subtest initialize => sub {
     new_ok 'Chirp::Timeline';
 };
 
-subtest find_home_tl => sub {
-    subtest 'not registered TL' => sub {
-        my $missing_user = Chirp::LittleBird->new(name => 'missing');
-        is 'Chirp::Timeline'->find_home_tl($missing_user), undef;
-    };
-
-    subtest 'already registered' => sub {
-        my $registered = Chirp::LittleBird->new(name => 'registered');
-        my $tl = Chirp::Timeline->new;
-        $Chirp::Timeline::USER_TLS->{$registered->name} = $tl;
-        is 'Chirp::Timeline'->find_home_tl($registered), $tl;
-    };
-};
-
-subtest new_home_tl => sub {
-    my $tk = Chirp::LittleBird->new(name => 'Tooru Kitajima');
-    my $tl = Chirp::Timeline->new_home_tl($tk);
-    isa_ok $tl, 'Chirp::Timeline';
-    is 'Chirp::Timeline'->find_home_tl($tk), $tl;
-    ok $tk->subscriber_of($tl);
-    ok $tk->pushable($tl);
-};
-
 subtest global => sub {
     my $first = Chirp::LittleBird->new(name => 'first children');
     my $second = Chirp::LittleBird->new(name => 'second children');
