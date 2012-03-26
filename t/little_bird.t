@@ -136,4 +136,16 @@ subtest followers => sub {
     };
 };
 
+subtest tweet => sub {
+    my $mei = Chirp::LittleBird->new(name => 'Mei Misaki');
+    my $body = 'もう始まってるかもしれないよ……';
+    my $before_tweets_count = scalar @{ $mei->home_tl->tweets };
+    ok none { $_->{'body'} eq $body } @{ $mei->home_tl->tweets };
+
+    $mei->tweet($body);
+
+    ok any { $_->{'body'} eq $body } @{ $mei->home_tl->tweets };
+    is scalar(@{$mei->home_tl->tweets}), $before_tweets_count + 1;
+};
+
 done_testing;

@@ -60,4 +60,9 @@ sub pushable {
     any { $_ eq $self->name } @{ $tl->publishers };
 }
 
+sub tweet {
+    my ($self, $body) = @_;
+    $self->home_tl->create_notification($self->name, {event => 'tweet', body => $body});
+}
+
 1;
