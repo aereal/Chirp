@@ -111,13 +111,13 @@ subtest home_tl => sub {
     subtest 'case of Nori san' => sub {
         my $nori_san = Chirp::LittleBird->new(name => 'Nori');
         isa_ok $nori_san->home_tl, 'Chirp::Timeline';
-        ok $nori_san->subscriber_of($nori_san->home_tl);
+        ok $nori_san->pushable($nori_san->home_tl);
     };
 
     subtest 'case of Nazuna-shi' => sub {
         my $nazuna_shi = Chirp::LittleBird->new(name => 'Nazuna');
         isa_ok $nazuna_shi->home_tl, 'Chirp::Timeline';
-        ok $nazuna_shi->subscriber_of($nazuna_shi->home_tl);
+        ok $nazuna_shi->pushable($nazuna_shi->home_tl);
     };
 };
 
