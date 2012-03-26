@@ -101,7 +101,7 @@ subtest create_notification => sub {
     subtest 'Tsukihi is in publishers' => sub {
         my $tsukihi = Chirp::LittleBird->new(name => 'Tsukihi');
         my $notification = {event => 'tweet', user_name => $tsukihi->name, body => 'platinum mukatsuku'};
-        my $tl = Chirp::Timeline->new(publishers => [$tsukihi->name]);
+        my $tl = Chirp::Timeline->global;
 
         ok none { $_ == $notification } @{ $tl->notifications };
         lives_ok { $tl->create_notification($tsukihi->name, $notification) };
