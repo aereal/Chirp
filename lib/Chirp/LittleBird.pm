@@ -46,7 +46,7 @@ sub subscriber_of {
 
 sub home_tl {
     my ($self) = @_;
-    Chirp::Timeline->find_home_tl($self) || Chirp::Timeline->new(publishers => [$self->name]);
+    Chirp::Timeline->find_home_tl($self) || Chirp::Timeline->new_home_tl($self);
 }
 
 sub followers {
