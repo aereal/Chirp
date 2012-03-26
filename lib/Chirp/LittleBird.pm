@@ -24,19 +24,19 @@ sub find {
 
 sub follow {
     my ($self, $other) = @_;
-    push @{$self->followee}, $other;
+    push @{$self->followee}, $other->name;
     return;
 }
 
 sub unfollow {
     my ($self, $other) = @_;
-    $self->followee([grep { !($_->name eq $other->name) } @{$self->followee}]);
+    $self->followee([grep { !($_ eq $other->name) } @{$self->followee}]);
     return;
 }
 
 sub followed {
     my ($self, $other) = @_;
-    any { $_ == $other } @{ $self->followee };
+    any { $_ eq $other->name } @{ $self->followee };
 }
 
 sub subscriber_of {

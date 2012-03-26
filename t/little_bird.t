@@ -47,9 +47,9 @@ subtest followee => sub {
     };
 
     subtest 'with initial followee' => sub {
-        my $default_followee = [Chirp::LittleBird->new(name => 'koyomi')];
-        my $bird = Chirp::LittleBird->new(name => 'hitagi', followee => $default_followee);
-        is_deeply $bird->followee, [@$default_followee];
+        my $koyomi = Chirp::LittleBird->new(name => 'koyomi');
+        my $bird = Chirp::LittleBird->new(name => 'hitagi', followee => [$koyomi->name]);
+        ok any { $_ eq $koyomi->name } @{ $bird->followee };
     };
 };
 
@@ -57,18 +57,19 @@ subtest follow => sub {
     my $yuno = Chirp::LittleBird->new(name => 'yuno');
     my $miyako = Chirp::LittleBird->new(name => 'miyako');
 
-    ok none { $_->name eq 'miyako' } @{$yuno->followee};
+    ok none { $_ eq 'miyako' } @{$yuno->followee};
     $yuno->follow($miyako);
-    ok any { $_->name eq 'miyako' } @{$yuno->followee};
+    ok any { $_ eq 'miyako' } @{$yuno->followee};
 };
 
 subtest unfollow => sub {
     my $sae = Chirp::LittleBird->new(name => 'sae');
-    my $hiro = Chirp::LittleBird->new(name => 'hiro', followee => [$sae]);
+    my $hiro = Chirp::LittleBird->new(name => 'hiro');
+    $hiro->follow($sae);
 
-    ok any { $_->name eq $sae->name } @{$hiro->followee};
+    ok any { $_ eq $sae->name } @{ $hiro->followee };
     $hiro->unfollow($sae);
-    ok none { $_->name eq $sae->name } @{$hiro->followee};
+    ok none { $_ eq $sae->name } @{$hiro->followee};
 };
 
 subtest followed => sub {
