@@ -11,4 +11,12 @@ use Chirp::LittleBird;
 use Chirp::Timeline;
 use Chirp::Timeline::WithFriends;
 
+subtest initialize => sub {
+    new_ok 'Chirp::Timeline::WithFriends';
+};
+
+subtest inheritance => sub {
+    isa_ok 'Chirp::Timeline::WithFriends'->new, 'Chirp::Timeline';
+};
+
 done_testing;
