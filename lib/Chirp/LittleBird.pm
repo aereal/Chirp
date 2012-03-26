@@ -14,6 +14,7 @@ sub new {
     my ($class, @args) = @_;
     my $self = $class->SUPER::new(@args);
     $REGISTERED->{$self->name} = $self;
+    push @{ 'Chirp::Timeline'->global->publishers }, $self->name;
     $self;
 }
 

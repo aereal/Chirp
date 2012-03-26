@@ -39,6 +39,25 @@ subtest new_home_tl => sub {
     ok $tk->pushable($tl);
 };
 
+subtest global => sub {
+    my $first = Chirp::LittleBird->new(name => 'first children');
+    my $second = Chirp::LittleBird->new(name => 'second children');
+    my $third = Chirp::LittleBird->new(name => 'third children');
+
+    isa_ok 'Chirp::Timeline'->global, 'Chirp::Timeline';
+    is 'Chirp::Timeline'->global, 'Chirp::Timeline'->global for (1..10);
+    ok all { $_->pushable(Chirp::Timeline->global) } values %{ $Chirp::LittleBird::REGISTERED };
+
+    subtest 'all posts included' => sub {
+        my $tweets = [map { [$_, 'Hello, my name is ' . $_->name] } ($first, $second, $third)];
+        for (@$tweets) {
+            my ($user, $body) = @$_;
+            $user->tweet($body);
+            ok any { $_->{'body'} eq $body } @{ 'Chirp::Timeline'->global->tweets };
+        }
+    }
+};
+
 subtest publishers => sub {
     subtest hidden => sub {
         my $tl = Chirp::Timeline->new;
