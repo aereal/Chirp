@@ -58,8 +58,10 @@ subtest follow => sub {
     my $miyako = Chirp::LittleBird->new(name => 'miyako');
 
     ok none { $_ eq 'miyako' } @{$yuno->followee};
+    ok not $miyako->pushable($yuno->home_tl);
     $yuno->follow($miyako);
     ok any { $_ eq 'miyako' } @{$yuno->followee};
+    ok $miyako->pushable($yuno->home_tl);
 };
 
 subtest unfollow => sub {
@@ -68,8 +70,10 @@ subtest unfollow => sub {
     $hiro->follow($sae);
 
     ok any { $_ eq $sae->name } @{ $hiro->followee };
+    ok $sae->pushable($hiro->home_tl);
     $hiro->unfollow($sae);
     ok none { $_ eq $sae->name } @{$hiro->followee};
+    ok not $sae->pushable($hiro->home_tl);
 };
 
 subtest followed => sub {

@@ -25,12 +25,14 @@ sub find {
 sub follow {
     my ($self, $other) = @_;
     push @{$self->followee}, $other->name;
+    push @{$self->home_tl->publishers}, $other->name;
     return;
 }
 
 sub unfollow {
     my ($self, $other) = @_;
     $self->followee([grep { !($_ eq $other->name) } @{$self->followee}]);
+    $self->home_tl->publishers([grep { !($_ eq $other->name) } @{$self->home_tl->publishers}]);
     return;
 }
 
