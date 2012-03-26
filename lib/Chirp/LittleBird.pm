@@ -55,4 +55,9 @@ sub followers {
     [grep { $class->find($_)->followed($self) } keys %$REGISTERED];
 }
 
+sub pushable {
+    my ($self, $tl) = @_;
+    any { $_ eq $self->name } @{ $tl->publishers };
+}
+
 1;

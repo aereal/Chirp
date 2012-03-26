@@ -101,6 +101,12 @@ subtest subscriber_of => sub {
     };
 };
 
+subtest pushable => sub {
+    my $nori_san = Chirp::LittleBird->new(name => 'Nori');
+    my $tl = Chirp::Timeline->new(publishers => [$nori_san->name]);
+    ok $nori_san->pushable($tl);
+};
+
 subtest home_tl => sub {
     subtest 'case of Nori san' => sub {
         my $nori_san = Chirp::LittleBird->new(name => 'Nori');
