@@ -76,11 +76,13 @@ sub block {
     $other->unfollow($self);
     $self->unfollow($other) if $self->followed($other);
     push @{$self->blocked_users}, $other->name;
+    $self->home_tl->create_notification($self->name, {event => 'block', from => $self->name, to => $other->name});
 }
 
 sub unblock {
     my ($self, $other) = @_;
     $self->blocked_users([grep { !($_ eq $other->name) } @{$self->blocked_users}]);
+    $self->home_tl->create_notification($self->name, {event => 'unblock', from => $self->name, to => $other->name});
 }
 
 1;
