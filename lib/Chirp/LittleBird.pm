@@ -27,12 +27,14 @@ sub find {
 sub follow {
     my ($self, $other) = @_;
     push @{$self->followee}, $other->name;
+    $self->home_tl->create_notification($self->name, {event => 'follow', from => $self->name, to => $other->name});
     return;
 }
 
 sub unfollow {
     my ($self, $other) = @_;
     $self->followee([grep { !($_ eq $other->name) } @{$self->followee}]);
+    $self->home_tl->create_notification($self->name, {event => 'unfollow', from => $self->name, to => $other->name});
     return;
 }
 

@@ -62,6 +62,7 @@ subtest follow => sub {
     $yuno->follow($miyako);
     ok any { $_ eq 'miyako' } @{$yuno->followee};
     ok $miyako->pushable($yuno->home_tl);
+    ok any { $_->{'event'} eq 'follow' && $_->{'from'} eq $yuno->name && $_->{'to'} eq $miyako->name } @{$yuno->home_tl->notifications};
 };
 
 subtest unfollow => sub {
@@ -74,6 +75,7 @@ subtest unfollow => sub {
     $hiro->unfollow($sae);
     ok none { $_ eq $sae->name } @{$hiro->followee};
     ok not $sae->pushable($hiro->home_tl);
+    ok any { $_->{'event'} eq 'unfollow' && $_->{'from'} eq $hiro->name && $_->{'to'} eq $sae->name } @{$hiro->home_tl->notifications};
 };
 
 subtest followed => sub {
