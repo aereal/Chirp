@@ -87,8 +87,7 @@ subtest notifications => sub {
 
     subtest 'Hitagi create tweet on this TL' => sub {
         my $hitagi = Chirp::LittleBird->new(name => 'Hitagi');
-        my $tweet_event = {tweet =>
-            {user_name => $hitagi->name, body => 'Araragi Koyomi, Bukkorosu'}};
+        my $tweet_event = {event => 'tweet', user_name => $hitagi->name, body => 'Araragi Koyomi, Bukkorosu'};
         my $tl = Chirp::Timeline->new(
             subscribers => [$hitagi->name], notifications => [$tweet_event]);
         ok any { $_ == $tweet_event } @{ $tl->notifications };
@@ -98,14 +97,14 @@ subtest notifications => sub {
 subtest create_notification => sub {
     subtest 'Karen is not in publishers' => sub {
         my $karen = Chirp::LittleBird->new(name => 'Karen');
-        my $notification = {tweet => {user_name => $karen->name, body => 'Hamigaki Daisuki'}};
+        my $notification = {event => 'tweet', user_name => $karen->name, body => 'Hamigaki Daisuki'};
         my $tl = Chirp::Timeline->new;
         like exception { $tl->create_notification($karen->name, $notification) }, qr/The user is not in publishers/;
     };
 
     subtest 'Tsukihi is in publishers' => sub {
         my $tsukihi = Chirp::LittleBird->new(name => 'Tsukihi');
-        my $notification = {tweet => {user_name => $tsukihi->name, body => 'platinum mukatsuku'}};
+        my $notification = {event => 'tweet', user_name => $tsukihi->name, body => 'platinum mukatsuku'};
         my $tl = Chirp::Timeline->new(publishers => [$tsukihi->name]);
 
         ok none { $_ == $notification } @{ $tl->notifications };
