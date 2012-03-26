@@ -114,4 +114,12 @@ subtest create_notification => sub {
     };
 };
 
+subtest tweets => sub {
+    my $kafuka = Chirp::LittleBird->new(name => 'Kafuka Fuura');
+    $kafuka->home_tl->create_notification($kafuka->name, {event => 'follow'});
+    $kafuka->home_tl->create_notification($kafuka->name, {event => 'unfollow'});
+    $kafuka->home_tl->create_notification($kafuka->name, {event => 'tweet'});
+    ok all { $_->{'event'} eq 'tweet' } @{ $kafuka->home_tl->tweets };
+};
+
 done_testing;

@@ -33,4 +33,9 @@ sub create_notification {
     push @{ $self->notifications }, $notification;
 }
 
+sub tweets {
+    my ($self) = @_;
+    [grep { $_->{'event'} eq 'tweet' } @{$self->notifications}];
+}
+
 1;
