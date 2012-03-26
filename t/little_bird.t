@@ -177,4 +177,14 @@ subtest block => sub {
     };
 };
 
+subtest unblock => sub {
+    my $me = Chirp::LittleBird->new(name => 'i my me mine');
+    my $forgiven = Chirp::LittleBird->new(name => 'forgiven');
+    $me->block($forgiven);
+    $me->unblock($forgiven);
+    ok not $forgiven->followed($me);
+    ok not $me->followed($forgiven);
+    lives_ok { $forgiven->follow($me) };
+};
+
 done_testing;

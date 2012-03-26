@@ -78,4 +78,9 @@ sub block {
     push @{$self->blocked_users}, $other->name;
 }
 
+sub unblock {
+    my ($self, $other) = @_;
+    $self->blocked_users([grep { !($_ eq $other->name) } @{$self->blocked_users}]);
+}
+
 1;
