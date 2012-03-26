@@ -5,6 +5,7 @@ use base qw(Test::Class);
 use Test::More;
 use Test::Name::FromLine;
 use List::MoreUtils ':all';
+use Test::Fatal qw/exception lives_ok/;
 use Data::Dumper;
 
 use lib '../lib';
@@ -150,6 +151,30 @@ subtest tweet => sub {
 
     ok any { $_->{'body'} eq $body } @{ $mei->home_tl->tweets };
     is scalar(@{$mei->home_tl->tweets}), $before_tweets_count + 1;
+};
+
+subtest block => sub {
+    my $me = Chirp::LittleBird->new(name => 'i my me');
+
+    subtest 'user who not followed yet' => sub {
+        subtest 'other followed me' => sub {
+            my $follower = Chirp::LittleBird->new(name => 'blocked follower');
+            $me->block($follower);
+            ok not $follower->followed($me);
+            like exception { $follower->follow($me) }, qr/Can't follow/;
+        };
+    };
+
+    subtest 'user who followed' => sub {
+        subtest 'other followed me' => sub {
+            my $follower = Chirp::LittleBird->new(name => 'blocked follower 2');
+            $me->follow($follower);
+            $me->block($follower);
+            ok not $follower->followed($me);
+            ok not $me->followed($follower);
+            like exception { $follower->follow($me) }, qr/Can't follow/;
+        };
+    };
 };
 
 done_testing;

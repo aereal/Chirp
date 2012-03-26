@@ -8,6 +8,7 @@ use Chirp::Timeline::WithFriends;
 
 has name => '';
 has followee => sub { [] };
+has blocked_users => sub { [] };
 
 our $REGISTERED = {};
 
@@ -26,6 +27,7 @@ sub find {
 
 sub follow {
     my ($self, $other) = @_;
+    die "Can't follow" if any { $_ eq $self->name } @{$other->blocked_users};
     push @{$self->followee}, $other->name;
     $self->home_tl->create_notification($self->name, {event => 'follow', from => $self->name, to => $other->name});
     return;
@@ -67,6 +69,13 @@ sub pushable {
 sub tweet {
     my ($self, $body) = @_;
     $self->home_tl->create_notification($self->name, {event => 'tweet', body => $body});
+}
+
+sub block {
+    my ($self, $other) = @_;
+    $other->unfollow($self);
+    $self->unfollow($other) if $self->followed($other);
+    push @{$self->blocked_users}, $other->name;
 }
 
 1;
